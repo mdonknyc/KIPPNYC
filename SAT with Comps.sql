@@ -1,3 +1,12 @@
+/*
+
+Title: SAT w/ Comps
+Created By: Unkwown
+Last Updated: 10/22/18
+Summary: Pulls data that shows a breakdown of how each demographic group scored on SAT 'Critical Reading' & 'Math'.
+
+*/
+
 Select 
 S.SystemStudentID,
 S.FullName,
