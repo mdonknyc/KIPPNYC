@@ -1,3 +1,12 @@
+/*
+
+Title: PSAT SAT Raw Data
+Created By: Unkwown
+Last Updated: 10/22/18
+Summary: Pulls raw data for the PSAT/SATs. Extracts and creates aliases for column fields when pulling data.
+
+*/
+
 SELECT 
 [DW_factTestScores].[ID] AS [ID],
 [DW_factTestScores].[SZRowID] AS [SZRowID],
