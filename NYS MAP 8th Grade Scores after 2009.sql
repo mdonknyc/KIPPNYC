@@ -1,3 +1,12 @@
+/*
+
+Title: NYS MAP 8th Grade Scores After 2009
+Created By: Unkwown
+Last Updated: 10/22/18
+Summary: Pulls NYS and MAP results for 8th grade students whose cohort year is > 2009. 
+
+*/
+
 Select Distinct
 S.SystemStudentID,
 S.FullName,
