@@ -1,3 +1,12 @@
+/*
+
+Title: PSAT SAT Max Score For Tableau
+Created By: Unkwown
+Last Updated: 10/22/18
+Summary: Pulls highest scores achieved on SAT Critical Reading and Math results, along with student demographics.
+
+*/
+
 Select 
 S.SystemStudentID,
 S.FullName,
