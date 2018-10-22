@@ -1,3 +1,12 @@
+/*
+
+Title: SAT Max Wide Format
+Created By: Unkwown
+Last Updated: 10/22/18
+Summary: Returns the highest scores achieved in 'Critical Readin' and 'Math' on the PSAT/SATs (excluding the cohort year 2013).
+
+*/
+
 Select 
 S.SystemStudentID,
 S.FullName,
