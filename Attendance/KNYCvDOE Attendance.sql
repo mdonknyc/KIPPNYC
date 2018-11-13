@@ -15,7 +15,7 @@ Summary: Pulls KIPP NYC, District, and Co-Located Schools daily attendance to co
 */
 
 SELECT kipp_attendance.*, district_attendance.avg_attendance as Dist_Attendance, colocate.avg_attendance AS colocated_attendance FROM
-(SELECT SchoolName_Abbreviation, AttendanceDate, SchoolCalendarKEY, DailyAttendance, DailyEnrollment, DailyAbsence, PercentDailyAttendance * 100 as AttendancePercent,
+(SELECT SchoolName_Abbreviation, AttendanceDate, SchoolCalendarKEY, DailyAttendance, DailyEnrollment, DailyAbsence, PercentDailyAttendance * 100 as AttendancePercent, SchoolYear4Digit,
 		CASE WHEN SchoolName_Abbreviation = 'ACA ES' THEN '07'
 			 WHEN SchoolName_Abbreviation = 'ACA MS' THEN '07'
 			 WHEN SchoolName_Abbreviation = 'AMP ES' THEN '17'
@@ -39,9 +39,7 @@ SELECT kipp_attendance.*, district_attendance.avg_attendance as Dist_Attendance,
 					ELSE SchoolName_Abbreviation
 		END AS CoLocation_Code
 	FROM [dw].[DW_dimSchool] SCH
-		JOIN [attendance].[DW_factAttendanceSchool] ATN ON ATN.SchoolKEY = SCH.SchoolKEY
-	WHERE SchoolYear4Digit = 2018) kipp_attendance
-	
+		JOIN [attendance].[DW_factAttendanceSchool] ATN ON ATN.SchoolKEY = SCH.SchoolKEY) kipp_attendance
 /*
 - Table is ended by being named 'kipp_attendance' and will return values from that table
 ----------------------------------------------------- 
@@ -63,19 +61,19 @@ SELECT kipp_attendance.*, district_attendance.avg_attendance as Dist_Attendance,
 	LEFT JOIN
 		(SELECT DATEFROMPARTS(Left(Attn_Date_YMD,4),SUBSTRING(Attn_Date_YMD,5,2), RIGHT(Attn_Date_YMD,2)) as Date, AVG(cast(ATTN_PCT as float)) as avg_attendance,
 		CASE WHEN LOC_CODE = 'X031' THEN 'ACA MS'
-			 WHEN LOC_CODE = 'X151' THEN 'ACA MS'
-			 WHEN LOC_CODE = 'K354' THEN 'AMP'
-			 WHEN LOC_CODE = 'X044' THEN 'FRE MS'
-			 WHEN LOC_CODE = 'X341' THEN 'FRE MS'
-			 WHEN LOC_CODE = 'M514' THEN 'INF'
-			 WHEN LOC_CODE = 'M125' THEN 'STA H MS'
-			 WHEN LOC_CODE = 'M362' THEN 'STA H MS'
-			 WHEN LOC_CODE = 'M115' THEN 'WH ES'
-			 WHEN LOC_CODE = 'M319' THEN 'WH MS'
-		  -- WHEN LOC_CODE = '____' THEN 'WH MS'
-			 WHEN LOC_CODE = 'M324' THEN 'WH MS'
-			ELSE ''
-			END AS CoLocation_Code
+		 WHEN LOC_CODE = 'X151' THEN 'ACA MS'
+		 WHEN LOC_CODE = 'K354' THEN 'AMP'
+		 WHEN LOC_CODE = 'X044' THEN 'FRE MS'
+		 WHEN LOC_CODE = 'X341' THEN 'FRE MS'
+		 WHEN LOC_CODE = 'M514' THEN 'INF'
+		 WHEN LOC_CODE = 'M125' THEN 'STA H MS'
+		 WHEN LOC_CODE = 'M362' THEN 'STA H MS'
+		 WHEN LOC_CODE = 'M115' THEN 'WH ES'
+		 WHEN LOC_CODE = 'M319' THEN 'WH MS'
+	  -- WHEN LOC_CODE = '____' THEN 'WH MS'
+		 WHEN LOC_CODE = 'M324' THEN 'WH MS'
+		ELSE ''
+		END AS CoLocation_Code
 		FROM [custom].[custom_doe_attendance] 
 		WHERE LOC_CODE in ('X031','X151','K354','X044', 'X341', 'M514', 'M125','M362','M115','M319', 'M321', 'M324') 
 		GROUP BY DATEFROMPARTS(Left(Attn_Date_YMD,4),SUBSTRING(Attn_Date_YMD,5,2), RIGHT(Attn_Date_YMD,2)), 
@@ -93,7 +91,4 @@ SELECT kipp_attendance.*, district_attendance.avg_attendance as Dist_Attendance,
 			 WHEN LOC_CODE = 'M324' THEN 'WH MS'
 			 ELSE '' END) colocate 
 			 ON colocate.date = kipp_attendance.AttendanceDate AND colocate.CoLocation_Code = kipp_attendance.CoLocation_Code
-			 ORDER By SchoolName_Abbreviation, AttendanceDate
 /*--End of Query--*/
-
---SELECT * FROM [custom].[custom_doe_attendance] DOE
